@@ -25,6 +25,6 @@ DATABASE_URL = "{}{}:{}@{}:{}/{}".format(
 engine = create_engine(
     DATABASE_URL
 )
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(autocommit=True, autoflush=True, bind=engine)
 
 Base = declarative_base()
