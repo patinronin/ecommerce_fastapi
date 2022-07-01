@@ -14,4 +14,4 @@ async def startup_event():
 
 @app.get("/")
 async def root():
-    return {"message": "Hello hewitt"}
+    return {"message": "Hello putos"}
