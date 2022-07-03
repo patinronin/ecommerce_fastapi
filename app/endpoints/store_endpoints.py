@@ -24,3 +24,18 @@ def read_store(store_id: int, db: Session = Depends(get_db)):
     if db_store is None:
         raise HTTPException(status_code=404, detail="store not found")
     return db_store
+
+
+@router.patch("/stores/{store_id}")
+def update_store(store: Store, store_id: int, db: Session = Depends(get_db)):
+    db_store = store_controller.update_store(db=db, store_id=store_id, store=store)
+    if db_store is None:
+        raise HTTPException(status_code=404, detail="store not found")
+    return db_store
+
+@router.delete("/stores/{store_id}")
+def delete_store(store_id: int, db: Session = Depends(get_db)):
+    db_response = store_controller.delete_store(db=db, store_id=store_id)
+    if db_response["status_code"] == 404:
+        raise HTTPException(status_code=404, detail="store not found")
+    return db_response
