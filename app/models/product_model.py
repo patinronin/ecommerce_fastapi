@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy.orm import relationship
 from db import Base
+
 
 
 class Product(Base):
@@ -7,6 +9,9 @@ class Product(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     description = Column(String)
-    cuantity = Column(Integer)
+    quantity = Column(Integer)
     product_name = Column(String)
     price = Column(Float)
+
+    store_id = Column(Integer, ForeignKey("stores.id"))
+    owner_store = relationship("Store", back_populates="products")
