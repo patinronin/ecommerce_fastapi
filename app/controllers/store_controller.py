@@ -23,6 +23,7 @@ def create_store(db: Session, store: store_schema.Store):
     db.refresh(db_store)
     return db_store
 
+
 def update_store(db: Session, store: store_schema.StoreBase, store_id: int):
     db.query(store_model.Store).filter(store_model.Store.id == store_id).update(store)
     db.commit()
@@ -36,14 +37,15 @@ def delete_store(db: Session, store_id):
         db.delete(db_store)
         db.commit()
         return {
-            "message": "objetct deleted successfully",
+            "message": "object deleted successfully",
             "status_code": 200
         }
     else:
         return {
-            "message": "objetct not found",
+            "message": "object not found",
             "status_code": 404
         }
+
 
 def create_store_product(db: Session, product: product_schema.ProductCreate, store_id: int):
     print(product.dict())
@@ -52,6 +54,3 @@ def create_store_product(db: Session, product: product_schema.ProductCreate, sto
     db.commit()
     db.refresh(db_product)
     return db_product
-
-
-

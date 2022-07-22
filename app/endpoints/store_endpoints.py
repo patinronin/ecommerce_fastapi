@@ -35,12 +35,14 @@ def update_store(store: StoreBase, store_id: int, db: Session = Depends(get_db))
         raise HTTPException(status_code=404, detail="store not found")
     return db_store
 
+
 @router.delete("/stores/{store_id}")
 def delete_store(store_id: int, db: Session = Depends(get_db)):
     db_response = store_controller.delete_store(db=db, store_id=store_id)
     if db_response["status_code"] == 404:
         raise HTTPException(status_code=404, detail="store not found")
     return db_response
+
 
 @router.post("/stores/{store_id}/products/", response_model=Product)
 def create_product_for_store(
