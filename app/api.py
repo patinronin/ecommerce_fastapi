@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from endpoints import user_endpoints, store_endpoints, auth_endpoints
+from endpoints import user_endpoints, store_endpoints
 
 api_router = APIRouter()
 
@@ -15,7 +15,3 @@ api_router.include_router(
 
 )
 
-api_router.include_router(
-    auth_endpoints.router,
-    tags=["Auth endpoints"]
-)

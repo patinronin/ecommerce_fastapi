@@ -9,6 +9,7 @@ app.include_router(api_router)
 @app.on_event("startup")
 async def startup_event():
     Base.metadata.create_all(bind=engine)
+    print("el cogollo")
 
 
 @app.get("/")
