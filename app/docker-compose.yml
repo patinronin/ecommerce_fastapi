@@ -3,7 +3,8 @@ version: "3.8"
 services:
 
   db:
-    container_name: postgresql_db
+    container_name: db
+    hostname:  db
     image: postgres
     restart: always
     ports:
@@ -36,8 +37,6 @@ services:
     ports:
       - 8000:8000
     depends_on:
-      - db
-    links:
       - db
     restart: always
 
