@@ -8,28 +8,27 @@ class BaseDBController:
     def __init__(self, model):
         self.model = model
 
-    async def get_by_id(self, db: Session, id: int):
+    def get_by_id(self, db: Session, id: int):
         try:
-            response = await db.query(self.model).get(id)
+            response = db.query(self.model).get(id)
         except SQLAlchemyError as e:
             raise HTTPException(status_code=500, detail=e.args)
-        return response.scalar_one()
+        return response
 
 
 
-    async def get_multi(
+    def get_multi(
             self, db: Session,
             page: int = 1,
             limit: int = 10):
         try:
 
-            response = await db.execute(
-                select(self.model).offset(page - 1).limit(limit)
-            )
+            response = db.query(self.model).offset(page - 1).limit(limit).all()
+            print("response get_multi: ", response)
 
         except SQLAlchemyError as e:
             raise HTTPException(status_code=500, detail=e.args)
-        return response.scalars().all()
+        return response
 
     def create(
             self, db: Session, obj_in
@@ -48,38 +47,34 @@ class BaseDBController:
             raise HTTPException(status_code=500, detail=e.args)
         return db_obj
 
-    async def update(
+    def update(
             self,
             db: Session,
             db_obj,
-            obj_in
+            obj_in,
+            id: int
     ):
-        obj_data = jsonable_encoder(obj_in)
+
         try:
-            if isinstance(obj_in, dict):
-                update_data = obj_in
-            else:
-                update_data = obj_in.dict(exclude_unset=True)
-            for field in obj_data:
-                if field in update_data:
-                    setattr(db_obj, field, update_data[field])
-                if "altered_at" in obj_data:
-                    setattr(db_obj, "altered_at", datetime.datetime.now())
-            db.add(db_obj)
-            await db.commit()
-            await db.refresh(db_obj)
+            db.query(db_obj).filter(db_obj.id == id).update(obj_in)
+            db.commit()
+            db_obj = db.query(db_obj).filter(db_obj.id == id).first()
+
         except SQLAlchemyError as e:
-            await db.rollback()
+            db.rollback()
             raise HTTPException(status_code=500, detail=e.args)
         return db_obj
 
-    async def remove(self, db: Session, id: int):
+    def remove(self, db: Session, id: int):
         try:
             obj = db.query(self.model).get(id)
-            await db.delete(obj)
-            await db.commit()
+            if obj:
+                db.delete(obj)
+                db.commit()
+            else:
+                raise HTTPException(status_code=404, detail="Not found")
         except SQLAlchemyError as e:
-            await db.rollback()
+            db.rollback()
             raise HTTPException(status_code=500, detail=e.args)
         return obj
 
