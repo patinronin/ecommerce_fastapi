@@ -25,8 +25,14 @@ print(DATABASE_URL)
 #DATABASE_URL = "postgresql+psycopg2://postgres:password@127.0.0.1:5432/test"
 
 engine = create_engine(
-    DATABASE_URL
+    DATABASE_URL,
+    echo=True
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
+
+# add the models here to create the tables on startup
+# from models.direction_user_model import DirectionUser
+#Base.metadata.add_all([DirectionUser.__table__, Table2.__table__])
+

@@ -11,6 +11,7 @@ class DirectionBase(BaseModel):
     city: str
     federal_entity: str
     country: str
+    user_id: int
 
 
 
@@ -18,8 +19,7 @@ class DirectionBase(BaseModel):
 class DirectionCreate(DirectionBase):
     pass
 
-class DirectionUserUpdate(DirectionBase):
-    pass
+
 
 
 class DirectionUser(DirectionBase):
@@ -29,6 +29,9 @@ class DirectionUser(DirectionBase):
     class Config:
         orm_mode = True
 
+class DirectionUserUpdate(DirectionBase):
+    user_id: int
+    pass
 class DirectionStore(DirectionBase):
     id: int
     store_id: int

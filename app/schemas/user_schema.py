@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-
+from schemas.direction_schema import DirectionUser
 class UserBase(BaseModel):
     user_name: str
     email: str
@@ -15,6 +15,7 @@ class User(UserBase):
     id: int
     password: str
     age: int
+    directions: list[DirectionUser] = []
 
 
     class Config:

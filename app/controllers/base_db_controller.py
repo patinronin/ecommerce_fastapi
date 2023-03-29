@@ -5,13 +5,10 @@ from fastapi.encoders import jsonable_encoder
 
 class BaseDBController:
 
-    def __init__(self, model, model_create, model_update):
+    def __init__(self, model):
         self.model = model
-        self.model_create = model_create
-        self.model_update = model_update
 
-
-    async def get_by_id(self,db: Session, id: int):
+    async def get_by_id(self, db: Session, id: int):
         try:
             response = await db.query(self.model).get(id)
         except SQLAlchemyError as e:
@@ -39,11 +36,12 @@ class BaseDBController:
     ):
         try:
             obj_in_data = jsonable_encoder(obj_in)
-            db_obj = self.model_create(**obj_in_data)  # type: ignore
+            db_obj = self.model(**obj_in_data)
             db.add(db_obj)
             db.commit()
             db.refresh(db_obj)
             print("db_obj create", db_obj)
+
         except SQLAlchemyError as e:
             db.rollback()
             print("error", e)
@@ -56,7 +54,7 @@ class BaseDBController:
             db_obj,
             obj_in
     ):
-        obj_data = jsonable_encoder(db_obj)
+        obj_data = jsonable_encoder(obj_in)
         try:
             if isinstance(obj_in, dict):
                 update_data = obj_in

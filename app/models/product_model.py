@@ -6,6 +6,7 @@ from db import Base
 
 class Product(Base):
     __tablename__ = "products"
+    print("creating products table")
 
     id = Column(Integer, primary_key=True, index=True)
     description = Column(String)

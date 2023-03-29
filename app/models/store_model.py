@@ -5,6 +5,7 @@ from db import Base
 
 class Store(Base):
     __tablename__ = "stores"
+    print("creating stores table")
 
     id = Column(Integer, primary_key=True, index=True)
     description = Column(String)
