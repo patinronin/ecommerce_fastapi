@@ -5,7 +5,6 @@ from db import Base
 
 class DirectionUser(Base):
     __tablename__ = "directionuser"
-    print("creating direction_user table")
 
     id = Column(Integer, primary_key=True, index=True)
     indications = Column(String)
@@ -18,5 +17,4 @@ class DirectionUser(Base):
     federal_entity = Column(String)
     country = Column(String)
     user_id = Column(Integer, ForeignKey("users.id"))
-    # falta agregar el campo directions en la tabla users
     owner_user = relationship("User", back_populates="directions")
