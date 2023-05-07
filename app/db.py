@@ -26,13 +26,14 @@ print(DATABASE_URL)
 
 engine = create_engine(
     DATABASE_URL,
-    echo=True
+    echo=False
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
 # add the models here to create the tables on startup
-# from models.direction_user_model import DirectionUser
+#from models.direction_user_model import DirectionUser
 #Base.metadata.add_all([DirectionUser.__table__, Table2.__table__])
+#Base.metadata.add_all([DirectionUser.__table__])
 
